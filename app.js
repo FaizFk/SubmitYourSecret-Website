@@ -23,7 +23,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-mongoose.connect('mongodb://localhost:27017/usersDB');
+mongoose.connect('mongodb+srv://faiz:'+process.env.MONGO_PASS+'@cluster0.wlh5r5u.mongodb.net/usersDB?appName=mongosh+1.5.4');
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
