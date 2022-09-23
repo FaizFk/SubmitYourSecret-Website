@@ -4,7 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "npm start":"node app.js"
+    "start":"node app.js"
+  },
+  "engines" : { 
+    "node" : "16.15.0"
   },
   "keywords": [],
   "author": "",
