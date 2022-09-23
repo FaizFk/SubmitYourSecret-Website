@@ -166,6 +166,6 @@ app.route('/login').post(passport.authenticate('local', { failureRedirect: '/log
 });
 
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
     console.log('Succesfully running app on port');
 });
