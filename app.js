@@ -7,6 +7,7 @@ const passportLocalMongoose = require('passport-local-mongoose');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const findOrCreate = require('mongoose-findorcreate');
+const flash = require('connect-flash');
 
 
 const app = express();
@@ -21,9 +22,10 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 
-mongoose.connect('mongodb+srv://faiz:'+process.env.MONGO_PASS+'@cluster0.wlh5r5u.mongodb.net/usersDB?appName=mongosh+1.5.4');
+mongoose.connect('mongodb+srv://faiz:' + process.env.MONGO_PASS + '@cluster0.wlh5r5u.mongodb.net/usersDB?appName=mongosh+1.5.4');
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
@@ -60,7 +62,7 @@ passport.use(new GoogleStrategy({
     }
 ));
 
-app.get('/', function (req,res) {
+app.get('/', function (req, res) {
     res.render('home');
 });
 
@@ -78,11 +80,11 @@ app.route('/auth/google/secrets').get(
 );
 
 app.get('/login', function (req, res) {
-    res.render('login');
+    res.render('login', { message: req.flash('error')});
 });
 
 app.get('/register', function (req, res) {
-    res.render('register');
+    res.render('register',{message:req.flash('register_error')});
 });
 
 app.get('/secrets', function (req, res) {
@@ -144,7 +146,7 @@ app.post('/register', async function (req, res) {
 
     User.register(new User({ username: req.body.username }), req.body.password, function (err, user) {
         if (err) {
-            console.log(err);
+            req.flash('register_error','User already exits');
             res.redirect('/register');
         }
         else {
@@ -161,7 +163,7 @@ app.post('/register', async function (req, res) {
     });
 });
 
-app.route('/login').post(passport.authenticate('local', { failureRedirect: '/login' }), function (req, res) {
+app.route('/login').post(passport.authenticate('local', { failureRedirect: '/login', failureFlash:{ type: 'error', message: 'Invalid username or password.' }}), function (req, res) {
     res.redirect('/secrets');
 });
 

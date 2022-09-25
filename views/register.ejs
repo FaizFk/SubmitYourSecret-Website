@@ -9,6 +9,11 @@
 </head>
 
 <body>
+    <%if(message){%>
+        <p>
+            <%=message%>
+        </p>
+        <%}%>
     <form action="/register" method="post">
         <input type="text" name="username" required>
         <input type="password" name="password" required>

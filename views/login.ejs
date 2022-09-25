@@ -9,12 +9,17 @@
 </head>
 
 <body>
-    <form action="/login" method="post">
-        <input type="text" name="username" required>
-        <input type="password" name="password" required>
-        <button type="submit">Login</button>
-    </form>
-    <a href="/auth/google">Sign in with Google</a>
+    <%if(message){%>
+        <p>
+            <%=message%>
+        </p>
+        <%}%>
+            <form action="/login" method="post">
+                <input type="text" name="username" required>
+                <input type="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+            <a href="/auth/google">Sign in with Google</a>
 </body>
 
 </html>
